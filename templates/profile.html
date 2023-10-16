@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+<div class="site-wrap">
+    {% include 'includes/header.html' %}
+
+    <div class="container">
+        <div class="col-md-12 mb-0">
+            <br><strong class="text-black">Your account details are below:</strong><hr>
+            <table>
+                <tr>
+                    <td><strong class="text-black">No. HP </strong></td>
+                    <td><strong class="text-black">: {{ account[0] }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-black">Nama </strong></td>
+                    <td><strong class="text-black">: {{ account[1] }}</strong></td>
+                </tr>                
+                <tr>
+                    <td><strong class="text-black">Jenis Kelamin </strong></td>
+                    <td><strong class="text-black">: {{ account[4] }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-black">Alamat </strong></td>
+                    <td><strong class="text-black">: {{ account[3] }}</strong></td>
+                </tr>
+                                
+            </table>
+            <hr>
+            <p><a href="{{url_for('logout')}}" class="buy-now btn btn-sm height-auto px-3 py-2 btn-danger">Logout</a></p>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+{% endblock %}

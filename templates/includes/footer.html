@@ -1,0 +1,70 @@
+<div class="site-section bg-secondary bg-image" style="background-image: url('static/images/bg_2.jpg');">
+    <div class="container">
+      <div class="row align-items-stretch">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <a href="#!" class="banner-1 h-100 d-flex" style="background-image: url('static/images/bg_1.jpg');">
+            <div class="banner-1-inner align-self-center">
+              <h2>Apotiku Produk</h2>
+              <p>Produk dari ApotiKu sangat aman dan terpercaya.
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <a href="#!" class="banner-1 h-100 d-flex" style="background-image: url('static/images/bg_2.jpg');">
+            <div class="banner-1-inner ml-auto  align-self-center">
+              <h2>Dinilai oleh pakar</h2>
+              <p>Produk yang kami sediakan telah diuji dan dinilai dari pakar dan ahli.
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+          <div class="block-7">
+            <h3 class="footer-heading mb-4">About Us</h3>
+            <p>ApotiKu adalah sebuah toko apotik online yang bisa diakses dari mana saja.</p>
+          </div>
+
+        </div>
+        <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+          <h3 class="footer-heading mb-4">Quick Links</h3>
+          <ul class="list-unstyled">
+            {% for katfoot in kategori %}
+            <li><a href="{{url_for('kategori', kate=katfoot[0])}}">{{katfoot[0]}}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="block-5 mb-5">
+            <h3 class="footer-heading mb-4">Contact Info</h3>
+            <ul class="list-unstyled">
+              <li class="address">Jalan-jalan</li>
+              <li class="phone"><a href="tel://23923929210">+62 8888 9999 11</a></li>
+              <li class="email">emailaddress@gmail.com</li>
+            </ul>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="row pt-5 mt-5 text-center">
+        <div class="col-md-12">
+          <p>
+            Copyright &copy;
+            <script>document.write(new Date().getFullYear());</script> All rights reserved  <i class="icon-heart" aria-hidden="true"></i>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </footer>

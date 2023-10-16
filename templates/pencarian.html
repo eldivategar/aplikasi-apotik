@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Store{% endblock %}
+
+
+{% block body %}
+
+  <div class="site-wrap">
+  
+    {% include 'includes/header.html' %}
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="{{url_for('index')}}">Home</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">Store</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        
+        <div class="row">   
+          <div class="col-lg-6">
+            <h3 class="mb-3 h6 text-uppercase text-black d-block">Filter by</h3>
+            <button type="button" class="btn btn-secondary btn-md dropdown-toggle px-4" id="dropdownMenuReference"
+              data-toggle="dropdown">Choose</button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+              <a class="dropdown-item" href="#">Relevance</a>
+              <a class="dropdown-item" href="#">Name, A to Z</a>
+              <a class="dropdown-item" href="#">Name, Z to A</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Price, low to high</a>
+              <a class="dropdown-item" href="#">Price, high to low</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="row">
+            {% if keyword %}
+            
+            {% for post1 in keyword %}
+            <div class="col-sm-6 col-lg-4 text-center item mb-4">
+              <span class="tag">Sale</span>
+              <a href="{{url_for('store_view', nama_produk=post1[1])}}"> <img src="data:;base64,{{post1[7]}}" width="270px" height="370px" alt="Image"></a>
+              <h3 class="text-dark"><a href="{{url_for('store_view', nama_produk=post1[1])}}">{{post1[1]}}</a></h3>
+              <p class="price">Rp. {{post1[2]}}</p>
+            </div>
+            {% endfor %}
+
+            {% else %}
+            <div class="col-sm-6 col-lg-8 text-center item mb-4">
+                <font size="10" class="text-black" style="margin: 0 auto;">Produk tidak ditemukan...</font>                
+            </div>
+            {% endif %}
+          
+
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12 text-center">
+            <div class="site-block-27">
+              <ul>
+                <li><a href="#">&lt;</a></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&gt;</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% include 'includes/footer.html' %}
+  </div>
+
+{% endblock %}

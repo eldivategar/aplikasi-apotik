@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Keranjang{% endblock %}
+
+
+{% block body %}
+
+<div class="site-wrap">
+
+    {% include 'includes/header.html' %}    
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0">
+            <a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> 
+            <strong class="text-black">Cart</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5">               
+                  <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th class="product-thumbnail">Tampilan</th>
+                          <th class="product-name">Produk</th>
+                          <th class="product-price">Harga</th>
+                          <th class="product-quantity">Jumlah</th>
+                          <th class="product-total">Subtotal</th>
+                          <th class="product-update">Update</th>
+                          <th class="product-remove">Hapus</th>
+                        </tr>
+                      </thead>
+                      {% for produk in produku %}
+                        <form class="col-mb-11" method="POST" action="{{url_for('updateitem', id_produk=produk[3])}}">
+                      <tbody>                        
+                        <tr>
+                          <td class="product-thumbnail">
+                            <img src="data:;base64,{{produk[2]}}" alt="Image" class="img-fluid">
+                          </td>
+                          <td class="product-name">
+                            <!-- <input type="hidden" name="id_produk" value="{{produk[3]}}">  -->
+                            <h2 class="h5 text-black">{{produk[4]}}</h2>
+                          </td>
+                          <td>Rp {{produk[5]}}</td>
+                          <td>
+                            <div class="input-group" style="max-width: 120px;">
+                              <div class="input-group-prepend">
+                                <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                              </div>
+                              <input type="text" name="qty" class="form-control text-center" value="{{produk[6]}}" placeholder=""
+                                aria-label="Example text with button addon" aria-describedby="button-addon1">
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                              </div>
+                            </div>
+          
+                          </td>
+                          <td>Rp {{produk[7]}}</td>
+                          <td><button type="submit" class="btn btn-info height-auto btn-sm">Update</button></td>
+                        </form>
+                          <td><a href="{{url_for('deleteitem', kode_obat=produk[3])}}" class="btn btn-danger height-auto btn-sm">X</a></td>
+                        </tr>                         
+                        {% endfor %}  
+                        <div class="col-md-6">
+                            <div class="row mb-5">                                
+                                <div class="col-md-6">
+                                    <a href="{{url_for('store')}}" class="btn btn-outline-primary btn-md btn-block">Lanjut ke Toko</a>
+                                </div>
+                            </div>                    
+                        </div>                               
+                      </tbody>                                   
+                    </table>
+                  </div>                
+            </div> 
+
+            <div class="row">     
+                <div class="col-md-6">
+                    <div class="row mb-5">
+                        
+                    </div>                    
+                </div>           
+                <div class="col-md-6 pl-5">
+                    <div class="row justify-content-end">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12 text-right border-bottom mb-5">
+                                    <h3 class="text-black h4 text-uppercase">Total</h3>
+                                </div>
+                            </div>                            
+                            <div class="row mb-5">
+                                <div class="col-md-6">
+                                    <span class="text-black">Total</span>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    {% for i in grandtotal %}
+                                        {% for gt in i %}
+                                    <strong class="text-black">Rp {{'{}' .format(gt) }}</strong>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+          
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary btn-lg btn-block" onclick="window.location='/checkout'">Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+            
+    {% include 'includes/footer.html' %}
+</div>
+{% endblock %}

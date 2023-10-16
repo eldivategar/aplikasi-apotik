@@ -1,0 +1,2 @@
+create view keranjang_pelanggan as SELECT cart.pelanggan, member.nama, obat.gambar, obat.kode_obat, obat.nama_obat, obat.harga, cart.jumlah_produk, obat.harga*cart.jumlah_produk as total_harga from member, obat, cart WHERE cart.pelanggan=member.no_hp and cart.produk=obat.kode_obat;
+

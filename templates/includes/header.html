@@ -1,0 +1,58 @@
+<div class="site-navbar py-2">
+
+    <div class="search-wrap">
+      <div class="container">
+        <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+        <form action="{{url_for('result')}}">
+          <input type="search" name="q" class="form-control" placeholder="Search keyword and hit enter...">
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="logo">
+          <div class="site-logo">
+            <a href="{{url_for('index')}}" class="js-logo-clone">ApotiKu</a>
+          </div>
+        </div>
+        <div class="main-nav d-none d-lg-block">
+          <nav class="site-navigation text-right text-md-center" role="navigation">
+            <ul class="site-menu js-clone-nav d-none d-lg-block">
+              <li><a href="{{url_for('index')}}">Home</a></li>
+              <li><a href="{{url_for('store')}}">Store</a></li>
+              <li class="has-children">
+                <a href="#">Produk</a>
+                <ul class="dropdown">
+                  {% for kat1 in kategori %}
+                  <li><a href="{{url_for('kategori', kate=kat1[0])}}">{{kat1[0]}}</a></li>
+                  {% endfor %}
+                </ul>
+              </li>                
+            </ul>
+          </nav>
+        </div>
+        <div class="icons">
+          <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+          <a href="{{url_for('cart')}}" class="icons-btn d-inline-block bag">
+            <span class="icon-shopping-bag"></span>
+            {% if session['loggedin'] %}
+              {% for len1 in length %}
+                {% for len in len1 %}
+              <span class="number">{{ len }}</span>
+                {% endfor %}
+              {% endfor %}
+            
+              {% else %}
+              <span class="number">0</span>
+              {% endif %}
+          </a>
+          <a href="{{url_for('profile')}}" class="icons-btn d-inline-block">
+            <span class="icon-user-circle"></span>
+          </a>
+            
+          
+        </div>
+      </div>
+    </div>
+  </div>

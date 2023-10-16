@@ -1,0 +1,107 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Data Produksi{% endblock %}
+
+{% block body %} 
+
+<div class="container-xxl">
+    <section class="content-header">
+        <h1> Data Produksi</h1>
+    </section><hr>
+    <a href="{{ url_for('upload') }}" class="btn btn-primary">Tambah Produk Baru</a><br>
+    <br><table class="table table-bordered">
+      {% if keyword %}
+        <thead>
+        <tr>
+            <th scope="col">Kode Produk</th>
+            <th scope="col">Produk</th>
+            <th scope="col">Harga</th>
+            <th scope="col">Kategori</th>
+            <th scope="col">Stok</th>
+            <th scope="col">Gambar</th>
+            <th scope="col">Kegunaan</th>
+            <th scope="col"><center>Action</center></th>
+        </tr>
+        </thead>
+        <tbody>
+          
+        {% for row in keyword %}
+        <tr>           
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>        
+            <td>{{row[4]}}</td>
+            <td><img src="data:;base64,{{row[7]}}" width="70px" height="50px" alt="N/A"></td>
+            <td>{{row[5]}}</td>        
+            <td><center>
+                <a href="#!" class="btn  btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modalEdit{{row[0]}}" ><img src=" {{ url_for('static', filename='base_administrasi/images/pencil-fill.svg') }} " alt=""></a><br>
+                <br><a href="/admin/hapusdata/{{ row[0] }}" class="btn  btn-danger btn-xs" onclick="return confirm('Yakin Ingin Menghapus File: {{row[1]}} ?')" ><img src=" {{ url_for('static', filename='base_administrasi/images/trash.svg') }} " alt=""></a>
+            </center></td>
+        </tr>
+        <!-- Modal Edit -->
+        <div class="modal fade" id="modalEdit{{row[0]}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Stok dan Produk</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ url_for('update_data') }}" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="hidden" name="id"  value="{{row[0]}}" class="form-control" />
+                            </div>                            
+                            <div class="form-group">
+                                Kode Produk :
+                                <input type="text" name="kodeproduk" class="form-control" value="{{row[0]}}" ><br>
+                            </div>
+                            
+                            <div class="form-group">
+                                Nama Produk :
+                                <input type="text" name="namaproduk" class="form-control" value="{{row[1]}}" ><br>
+                            </div>
+                            
+                            <div class="form-group">
+                                Harga :                                
+                                <input type="number" name="harga" class="form-control" value="{{row[2]}}" ><br>
+                            </div>
+                            
+                            <div class="form-group">
+                                Kategori :                                
+                                <input type="text" name="kategori" class="form-control" value="{{row[3]}}" ><br>
+                            </div>
+                            
+                            <div class="form-group">
+                                Stok :                                
+                                <input type="number" name="stok" class="form-control" value="{{row[4]}}" ><br>
+                            </div>
+                            
+                            <div class="form-group">
+                                Kegunaan :                                
+                                <textarea name="kegunaan" cols="30" class="form-control" rows="8">{{row[5]}}</textarea><br>
+                            </div>                           
+                            
+                            <br><div class="form-group">
+                                Gambar  Produk:
+                                <br><img src="data:;base64,{{row[7]}}" width="70px" height="50px" alt="Wow"><br>
+                                <br><input type="file" name="gambar" class="form-control">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" id="Submit" name="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h4 style="font-size: 20px; color:black; margin: 0 auto;">Data tidak ditemukan...</h4>
+
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

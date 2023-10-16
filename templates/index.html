@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="site-wrap">
+  {% include 'includes/header.html' %}
+  
+
+  <div class="site-blocks-cover" style="background-image: url('static/images/hero_1.jpg');">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
+          <div class="site-block-cover-content text-center">
+            <h2 class="sub-title">Effective Medicine, New Medicine Everyday</h2>
+            <h1>Welcome To ApotiKu</h1>
+            <p>
+              <a href="{{url_for('store')}}" class="btn btn-primary px-5 py-3">Belanja Sekarang</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-section">
+    <div class="container">
+      <div class="row align-items-stretch section-overlap">
+        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+          <div class="banner-wrap bg-primary h-100">
+            <a href="#!" class="h-100">
+              <h5>Bebas <br> Biaya Kirim</h5>
+              <p>
+                
+                <strong>Bebas Biaya Kirim untuk daerah Sleman-Magelang.</strong>
+              </p>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+          <div class="banner-wrap h-100">
+            <a href="#!" class="h-100">
+              <h5>Kartu <br>  Member</h5>
+              <p>
+
+                <strong>Kami menyediakan Kartu Member untuk pelanggan setia dari ApotiKu.</strong>
+              </p>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+          <div class="banner-wrap bg-warning h-100">
+            <a href="#!" class="h-100">
+              <h5>Terpercaya </h5>
+              <p>
+
+                <strong>Obat dan Suplemen kami terpercaya.</strong>
+              </p>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="title-section text-center col-12">
+          <h2 class="text-uppercase">Produk dari apotiku</h2>
+        </div>
+      </div>
+
+      <div class="row">
+        {% for post1 in posted1 %}
+        <div class="col-sm-6 col-lg-4 text-center item mb-4">            
+          <span class="tag">Sale</span>
+          <a href="{{url_for('store_view', nama_produk=post1[1])}}"> <img src="data:;base64,{{post1[7]}}" width="270px" height="370px" alt="Image"></a>
+          <h3 class="text-dark"><a href="{{url_for('store_view', nama_produk=post1[1])}}">{{post1[1]}}</a></h3>
+          <p class="price">Rp {{post1[2]}}</p>
+        </div>
+        {% endfor %}      
+        
+      </div>
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <a href="{{url_for('store')}}" class="btn btn-primary px-4 py-3">View All Products</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="site-section bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="title-section text-center col-12">
+          <h2 class="text-uppercase">Produk Baru</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 block-3 products-wrap">
+          <div class="nonloop-block-3 owl-carousel">
+
+            {% for post2 in posted2 %}
+            <div class="text-center item mb-4">
+              <a href="{{url_for('store_view', nama_produk=post2[1])}}"> <img src="data:;base64,{{post2[7]}}" alt="Image"></a>
+              <h3 class="text-dark"><a href="{{url_for('store_view', nama_produk=post2[1])}}">{{post2[1]}}</a></h3>
+              <p class="price">Rp. {{post2[2]}}</p>
+            </div>
+            {% endfor %}
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+      
+
+  
+  {% include 'includes/footer.html' %}
+
+
+</div>
+{% endblock %}
+

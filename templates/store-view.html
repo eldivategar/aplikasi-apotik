@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Store{% endblock %}
+
+{% block body %}
+
+  <div class="site-wrap">
+    
+    {% include 'includes/header.html' %}
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          {% for row in produk %}
+          <div class="col-md-12 mb-0"><a href="{{url_for('index')}}">Home</a> <span class="mx-2 mb-0">/</span> <a
+              href="{{url_for('store')}}">Store</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{row[1]}}</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">            
+            <div class="col-md-5 mr-auto">
+
+              <form action="{{url_for('addcart')}}" method="POST">
+                <input type="hidden" name="user" value="{{session['no_hp']}}">
+                <input type="hidden" name="id_produk" value="{{row[0]}}">
+                
+              <div class="border text-center">
+                <img src="data:;base64,{{row[7]}}" alt="Image" class="img-fluid p-5">
+              </div>
+            </div>
+            <div class="col-md-6">
+
+              
+              <h2 class="text-black">{{row[1]}}</h2>
+              <p>{{row[5]}}.</p>          
+
+              <p><strong class="text-black h4">Rp {{row[2]}}</strong></p>
+                          
+              <div class="mb-5">
+                <div class="input-group mb-3" style="max-width: 220px;">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                  </div>
+                  <input type="text" name="qty" class="form-control text-center" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                  </div>
+                </div>
+      
+              </div>
+              
+              <button type="submit" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Tambah ke Keranjang</button>
+      
+            </div>
+            {% endfor %}
+          
+        </div>
+      </form>
+
+      </div>    
+    </div>        
+
+
+    {% include 'includes/footer.html' %}
+  </div>
+
+{% endblock %}

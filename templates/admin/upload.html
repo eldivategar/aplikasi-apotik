@@ -1,0 +1,64 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}New Products{% endblock %}
+
+
+{% block body %}
+<div class="container-sm">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1> Tambah Produk Baru </h1><br>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!-- data table (database) area -->
+                        <div class="box-body">
+                            <form action="{{url_for('upload')}}" method="POST" enctype="multipart/form-data">                                
+                                <div class="form-group">
+                                    Kode Produk :
+                                    <input type="text" name="kodeproduk" class="form-control" placeholder="Kode produk" required><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    Nama Produk :
+                                    <input type="text" name="namaproduk" class="form-control" placeholder="Nama produk" required><br>
+                                </div>
+                                
+                                <div class="form-group">
+                                    Harga :
+                                    <input type="number" name="harga" class="form-control" placeholder="Harga produk" required><br>
+                                </div>      
+                                
+                                <div class="form-group">
+                                    Kategori :
+                                    <input type="text" name="kategori" class="form-control" placeholder="Kategori produk" required><br>
+                                </div>
+
+                                <div class="form-group">
+                                    Stok :
+                                    <input type="number" name="stok" class="form-control" placeholder="Stok" required><br>
+                                </div>
+
+                                <div class="form-group">
+                                    Kegunaan :
+                                    <input type="text" name="kegunaan" class="form-control" placeholder="Kegunaan dari produk..." required><br>
+                                </div>                         
+                                
+                                <div class="form-group">
+                                    Gambar :
+                                    <input type="file" name="gambar" class="form-control">
+                                
+                                </div> 
+                                    <br><button type="submit" class="btn btn-primary "> Submit </button>
+                                    <button type="reset" class="btn btn-danger"> Cancel </button><br><br>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

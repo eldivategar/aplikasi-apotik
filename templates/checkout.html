@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block body %}
+
+  <div class="site-wrap">
+
+    {% include 'includes/header.html' %}
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0">
+            <a href="{{url_for('index')}}">Home</a> <span class="mx-2 mb-0">/</span>
+            <strong class="text-black">Checkout</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">        
+        <div class="row">
+          <div class="col-md-6 mb-5 mb-md-0">
+            <h2 class="h3 mb-3 text-black">Pesanan Saya</h2>
+                <div class="p-3 p-lg-5 border">
+                  <table class="table site-block-order-table mb-5">
+                    <thead>
+                      <th>Produk</th>
+                      <th>Total</th>
+                    </thead>
+
+                    {% for trans in transaksi %}
+                    <form action="{{url_for('addorder')}}" method="POST">
+                      {% for jml1 in jml_produk %}
+                        {% for jml in jml1 %}
+                      <input type="hidden" name="jumlah_produk" value="{{jml}}">
+                        {% endfor %}
+                      {% endfor %}
+                    <tbody>
+                      <tr>
+                        <td>{{trans[4]}} <strong class="mx-2">x</strong> {{trans[6]}}</td>
+                        <td>Rp {{trans[7]}}</td>
+                      </tr> 
+                      {% endfor %}                                            
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Total Belanja</strong></td>
+                        {% for gt1 in grandtotal %}
+                          {% for gt in gt1 %}
+                        <td class="text-black font-weight-bold"><strong>Rp {{gt}}</strong></td>
+                          {% endfor %}
+                        {% endfor %}
+                      </tr>
+                    </tbody>                    
+                  </table>
+    
+                  <div class="border mb-3">
+                    <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsebank" role="button"
+                        aria-expanded="false" aria-controls="collapsebank">Transfer bank</a></h3>
+    
+                    <div class="collapse" id="collapsebank">
+                      <div class="py-2 px-4">
+                        <p class="mb-0">Lakukan pembayaran dengan ATM Mandiri.</p>
+                        <strong>Atas Nama       : ApotiKu Lancar Jaya</strong><br>
+                        <strong>No . Rekening : XXXX XXXX XXXX XXXX</strong>
+                      </div>
+                    </div>
+                  </div>                                            
+    
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Place Order</button>
+                  </div>
+                
+                </div>
+
+          </div>
+          <div class="col-md-6">
+    
+            <div class="row mb-5">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="c_order_notes" class="text-black">Catatan</label>
+                  <input type="text" class="form-control" name="catatan" placeholder="Tulis pesan mu disini...">
+                </div>
+                
+              </div>
+            </div>
+          </form>
+    
+          </div>
+        </div>
+        <!-- </form> -->
+      </div>
+    </div>
+    
+
+    
+  </div>
+
+{% endblock %}

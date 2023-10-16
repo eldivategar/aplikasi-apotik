@@ -1,0 +1,27 @@
+konsumen: (sekaligus login)
+	1. No. HP (Primary Key) int(20)
+	2. Nama konsumen varchar(50)
+	3. alamat text
+	4. Jenis Kelamin, varchar(20)
+
+
+obat:
+	1. kode_obat (Primary Key) varchar(10)
+	2. Nama Obat varchar(50)
+	3. Stok int(5)
+	4. Kegunaan text
+	5. Harga int(20)
+
+user login:
+	1. id_login int(5)
+	2. username varchar(50) NULL
+	3. password text
+
+
+transaksi:
+	1. kode_transaksi (Primary Key) int(11)
+	2. No pelanggan (Foreign Key, References -> konsumen.No.HP) int(20)
+	3. Nama Produk 	  (Foreign Key, References -> obat.kode_obat) varchar(10)
+	4. tanggal_transaksi date
+	5. Jumlah Produk int(5)
+	6. Total Harga int(10)
