@@ -15,3 +15,12 @@
 5. Masuk virtual environment `source venv/Script/activate`.
 6. Install dependecies `pip install -r requirements.txt`.
 7. Jalankan server `python app.py`
+
+
+## Fitur
+
+Terdapat 2 halaman user:
+
+- Admin: **127.0.0.1:5000/administrasi/**
+- Customer: **127.0.0.1:5000**
+
