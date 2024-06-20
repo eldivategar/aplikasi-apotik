@@ -19,8 +19,8 @@
         <div class="main-nav d-none d-lg-block">
           <nav class="site-navigation text-right text-md-center" role="navigation">
             <ul class="site-menu js-clone-nav d-none d-lg-block">
-              <li><a href="{{url_for('index')}}">Home</a></li>
-              <li><a href="{{url_for('store')}}">Store</a></li>
+              <li class="{% if request.path == '/' %} active {% endif %}"><a href="{{url_for('index')}}">Home</a></li>
+              <li class="{% if '/store' in request.path %} active {% endif %}"><a href="{{url_for('store')}}">Store</a></li>
               <li class="has-children">
                 <a href="#">Produk</a>
                 <ul class="dropdown">

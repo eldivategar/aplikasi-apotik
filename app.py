@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for, session, f
 from mysql import connector
 from functools import wraps
 from datetime import date
+from slugify import slugify
 import base64
 import re
 
@@ -11,14 +12,15 @@ app.secret_key = "apotiku"
 
 db = cursor = None
 
-
+# Database Configuration
 def openDb():
     global db, cursor
     db = connector.connect(
             host = "localhost",
             user = "root",
-            passwd = "",
-            database = "db_apotek" 
+            password = "mysql",
+            database = "db_apotek",
+            auth_plugin='mysql_native_password'
     )
     if db.is_connected():
         print("Berhasil terhubung dengan database")
@@ -30,6 +32,10 @@ def closeDb():
     cursor.close()
     db.close()
 
+# Slugify
+@app.template_filter('slugify')
+def slugify_filter(s):
+    return slugify(s)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(): 
@@ -114,7 +120,7 @@ def store():
     return render_template('store.html', posted1 = result, length = length, kategori = kategori)
     
 
-@app.route('/store <kate>')
+@app.route('/store/<kate>')
 def kategori(kate):
     openDb()
     cursor.execute('select * from obat where kategori=%s and stok > 0', (kate,))
@@ -153,10 +159,10 @@ def result():
     return render_template('pencarian.html', keyword = result1, length = length, kategori = kategori)
 
 
-@app.route('/produk <nama_produk>')
+@app.route('/produk/<nama_produk>')
 def store_view(nama_produk):
     openDb()    
-    cursor.execute("select * from obat where nama_obat='{}'" .format(nama_produk))
+    cursor.execute("select * from obat where slug='{}'" .format(nama_produk))
     result = cursor.fetchall()
 
     cursor.execute('SELECT DISTINCT kategori FROM obat')
@@ -213,7 +219,7 @@ def addcart():
         return redirect(request.referrer)
 
 
-@app.route('/updateitem <id_produk>', methods = ['POST'])
+@app.route('/updateitem/<id_produk>', methods = ['POST'])
 @logindulu
 def updateitem(id_produk):
     openDb()    
@@ -224,7 +230,7 @@ def updateitem(id_produk):
     
     return redirect(request.referrer)
 
-@app.route('/deleteitem <kode_obat>')
+@app.route('/deleteitem/<kode_obat>')
 @logindulu
 def deleteitem(kode_obat):
     openDb()
@@ -393,7 +399,7 @@ def login_admin():
         account = cursor.fetchone()
         
         if account:
-            session['loggedin'] = True
+            session['loggedin_admin'] = True
             session['id_login'] = account[1]
             session['username'] = account[2]
             msg = 'Logged in successfully !'
@@ -409,7 +415,7 @@ def login_admin():
 def logindulu_admin(f):
 	@wraps(f)
 	def wrap_admin(*args,**kwargs):
-		if 'loggedin' in session:
+		if 'loggedin_admin' in session:
 			return f(*args,**kwargs)
 		else:
 			flash('Unauthorized, Please Login','danger')
@@ -451,10 +457,11 @@ def upload():
         kegunaan = request.form['kegunaan']
         file_gambar = request.files['gambar'].read()
         gambar = render_picture(file_gambar)
+        slug = slugify(namaproduk)
 
         openDb()
-        sql = 'insert into obat (kode_obat, nama_obat, harga, kategori, stok, kegunaan, file_gambar, gambar) values (%s, %s, %s, %s, %s, %s, %s, %s)'
-        val = (kodeproduk, namaproduk, harga, kategori, stok, kegunaan, file_gambar, gambar)
+        sql = 'insert into obat (kode_obat, nama_obat, harga, kategori, stok, kegunaan, file_gambar, gambar, slug) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+        val = (kodeproduk, namaproduk, harga, kategori, stok, kegunaan, file_gambar, gambar, slug)
         cursor.execute(sql, val)
         db.commit()
         closeDb()
@@ -463,26 +470,52 @@ def upload():
         return render_template('admin/upload.html')
 
 
-@app.route('/admin/updatedata/', methods = ['POST', 'GET'])
+@app.route('/admin/updatedata/', methods=['POST', 'GET'])
 @logindulu_admin
 def update_data():
-    if request.method == 'POST' :
+    if request.method == 'POST':
         kodeproduk = request.form['kodeproduk']
         namaproduk = request.form['namaproduk']
         harga = request.form['harga']
         kategori = request.form['kategori']
         stok = request.form['stok']
         kegunaan = request.form['kegunaan']
-        file_gambar = request.files['gambar'].read()
-        gambar = render_picture(file_gambar)
+        
+        # Jika gambar tidak diupload, gunakan gambar lama
+        if 'gambar' in request.files and request.files['gambar'].filename != '':
+            file_gambar = request.files['gambar'].read()
+            gambar = render_picture(file_gambar)
+        else:
+            file_gambar = None
+            gambar = None
+
+        slug = slugify(namaproduk)
 
         openDb()
-        sql = "UPDATE obat SET kode_obat=%s, nama_obat=%s, harga=%s, kategori=%s, stok=%s, kegunaan=%s, file_gambar=%s, gambar=%s WHERE kode_obat=%s "
-        val = (kodeproduk, namaproduk, harga, kategori, stok, kegunaan, file_gambar, gambar, kodeproduk)
+        
+        # Bangun query dinamis berdasarkan apakah gambar diperbarui atau tidak
+        if file_gambar is not None:
+            sql = """
+                UPDATE obat 
+                SET kode_obat=%s, nama_obat=%s, harga=%s, kategori=%s, stok=%s, kegunaan=%s, file_gambar=%s, gambar=%s, slug=%s 
+                WHERE kode_obat=%s
+            """
+            val = (kodeproduk, namaproduk, harga, kategori, stok, kegunaan, file_gambar, gambar, slug, kodeproduk)
+        else:
+            sql = """
+                UPDATE obat 
+                SET kode_obat=%s, nama_obat=%s, harga=%s, kategori=%s, stok=%s, kegunaan=%s, slug=%s 
+                WHERE kode_obat=%s
+            """
+            val = (kodeproduk, namaproduk, harga, kategori, stok, kegunaan, slug, kodeproduk)
+
         cursor.execute(sql, val)
         db.commit()
         closeDb()
         return redirect(url_for('dataproduk'))
+    else:
+        return redirect(url_for('dataproduk'))
+
 
 
 @app.route('/result/admin`', methods = ['POST', 'GET'])
